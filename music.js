@@ -3,8 +3,12 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var app     = express();
 var exec = require('child_process').exec;
-
-const songsDir = '/home/bodya/Music';
+const username = require('username');
+ 
+var songsDir;
+username().then(username => {
+    songsDir = `/home/${username}/Music`;
+});
 
 app.use(bodyParser.urlencoded({ extended: true })); 
 
@@ -67,7 +71,6 @@ app.get('/min', function (req, res) {
 	exec("clementine -v 0");	
 });
 
-
 app.get('/sleep', function (req, res) {
 	res.end();
 	exec("sudo rtcwake -m mem -s " + req.query.time);
@@ -76,18 +79,12 @@ app.get('/sleep', function (req, res) {
 	});
 });
 
-app.get('/trans', function (req, res) {
-	res.end();
-	exec("trans :uk -sp car", function (err, stdout) {
-		console.log(stdout.length);
-	});	
-});
-
 app.listen(8080, function () {
   console.log('Server running at http://127.0.0.1:8080/');
 });
 
 
+// https://gist.github.com/ashblue/3916348
 function getFilesRecursive (folder) {
     var fileContents = fs.readdirSync(folder),
         fileTree = [],
