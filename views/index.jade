@@ -1,0 +1,90 @@
+html
+	head
+		meta(name="viewport" content="width=device-width, initial-scale=1")
+		link(href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css", rel="stylesheet")
+		link(href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet")
+
+	body
+		script(src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0/jquery.js')
+		script(src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js")
+		script(src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js")
+		script(src="https://cdnjs.cloudflare.com/ajax/libs/jquery-timepicker/1.10.0/jquery.timepicker.js")
+		script(src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.8/angular.js")
+		script(src="https://angular-ui.github.io/bootstrap/ui-bootstrap-tpls-1.3.3.js")
+
+		div.container
+			h1 Choose song
+			button(id="trans" class="btn btn-info") Trans
+			button(id="max" class="btn btn-danger") Max
+			button(id="min" class="btn btn-danger") Min
+			button(id="next" class="btn btn-primary") Next
+			button(id="prev" class="btn btn-primary") Prev
+			div(id="play" class="btn btn-primary") Play
+			button(id="down" class="btn btn-primary") Volume down
+			button(id="up" class="btn btn-primary") Volume up
+			button(id='toggle' class="btn btn-primary") Play/Pause
+
+			form(id="songform")
+				select(name="song" form="songform" class="form-control" multiple="multiple")
+					each song in songs
+						if song.songs
+							optgroup(label=song.name)
+							each s in song.songs
+								option= s
+						else
+							option= song
+								
+
+			h1 Set time
+			div.time
+				div(ng-app="app" ng-cloak)
+					uib-timepicker(ng-model="time" show-meridian="false" pad-hours="false" show-seconds="true")
+			div(id="sleep" class="btn btn-primary") Go to sleep
+
+			script.
+				var app = angular.module('app', ['ui.bootstrap']);
+				$(function() {
+					$('.uib-timepicker').find('input').each(function() {
+						this.value = "0";
+					});
+
+					$("div#play").click(function() {
+						console.log($('#songform').serialize());
+						var url = "/play"; // the script where you handle the form input.
+						$.ajax({
+							type: "GET",
+							url: url,
+							data: $("#songform").serialize() // serializes the form's elements.
+						});
+						
+						return false; // avoid to execute the actual submit of the form.
+					});
+					
+					$('button').click(function (evt) {
+						$.get('/' + evt.target.id);
+					});
+
+
+					$('div#sleep').click(function() {
+						$.ajax({
+							type: "GET",
+							url: "/sleep",
+							dataType: 'json',
+							data: { 
+								time: $('input[ng-model=hours]')[0].value * 3600 + 
+												parseInt($('input[ng-model=minutes]')[0].value) * 60 + 
+												parseInt($('input[ng-model=seconds]')[0].value),
+								song: $('.select2-selection__choice')[0].title
+							}
+						});
+					});
+
+					$('select').select2({
+						placeholder: 'Choose song'
+					});
+				});
+				
+				
+			
+			
+
