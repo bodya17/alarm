@@ -8,7 +8,10 @@
 ### Installation
 1. download this project
 2. cd to this repository in your local machine
-3. install dependencies by executing ``` npm install ```
+3. install dependencies by executing
+  ```bash
+  npm install
+  ```
 4. execute ``` node music.js ``` to start application
 5. point your browser to http://localhost:8080/
 
