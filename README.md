@@ -12,6 +12,6 @@
 4. execute ``` node music.js ``` to start application
 5. point your browser to http://localhost:8080/. You should see this page
 
-![](https://i.imgur.com/tLGnfPy.png)
+![](https://i.imgur.com/2MgbarR.png)
 
 This project inspired by [stop-server](https://github.com/typicode/stop-server)
