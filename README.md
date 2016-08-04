@@ -9,13 +9,12 @@
 1. download this project
 2. cd to this repository in your local machine
 3. install dependencies by executing
-  ```bash
+  ```
   npm install
   ```
 4. execute ``` node music.js ``` to start application
-5. point your browser to http://localhost:8080/
+5. point your browser to http://localhost:8080/. You should see this page
 
-### Screenshot
-view [here](https://i.imgur.com/tLGnfPy.png)
+![](https://i.imgur.com/tLGnfPy.png)
 
 This project inspired by [stop-server](https://github.com/typicode/stop-server)
