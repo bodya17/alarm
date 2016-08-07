@@ -19,64 +19,17 @@ app.get('/', function (req, res) {
 	res.render('index', { songs: getFilesRecursive(songsDir) });
 });
 
-app.get('/play', function (req, res) {
-	console.log('Play');
-	res.end();
-	if (typeof req.query.song === 'object') {
-		req.query.song.forEach(function (song) {
-			exec(`find ${songsDir} -type f -name '${song}'` , function (error, stdout) {
-				exec(`clementine '${stdout}'`);
-			});
-		}); 
-	} else {
+app.get('/sleep', function (req, res) {
+	if (req.query.time) {	
+		exec("sudo rtcwake -m mem -s " + req.query.time);
+	}
+
+	if (req.query.song) {
 		exec(`find ${songsDir} -type f -name '${req.query.song}'` , function (error, stdout) {
 			exec(`clementine '${stdout}'`);
 		});
 	}
-});
-
-app.get('/prev', function (req, res) {
 	res.end();
-	exec("clementine -r");
-});
-
-app.get('/next', function (req, res) {
-	res.end();
-	exec("clementine -f");
-});
-
-app.get('/toggle', function (req, res) {
-	res.end();
-	exec("clementine -t");
-});
-
-app.get('/down', function (req, res) {
-	res.end();
-	exec("clementine --volume-down");
-});
-
-app.get('/up', function (req, res) {
-	res.end();
-	exec("clementine --volume-up");
-});
-
-app.get('/max', function (req, res) {
-	res.end();
-	exec("clementine -v 100");
-});
-
-app.get('/min', function (req, res) {
-	res.end();
-	console.log('min');
-	exec("clementine -v 0");	
-});
-
-app.get('/sleep', function (req, res) {
-	res.end();
-	exec("sudo rtcwake -m mem -s " + req.query.time);
-	exec(`find ${songsDir} -type f -name '${req.query.song}'` , function (error, stdout) {
-		exec(`clementine '${stdout}'`);
-	});
 });
 
 app.listen(8080, function () {

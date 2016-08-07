@@ -13,14 +13,6 @@ html
 
 		div.container
 			h1 Choose song
-			//- button(id="max" class="btn btn-danger") Max Volume
-			//- button(id="min" class="btn btn-danger") Min Volume
-			//- button(id="next" class="btn btn-primary") Next
-			//- button(id="prev" class="btn btn-primary") Prev
-			//- div(id="play" class="btn btn-primary") Play
-			//- button(id="down" class="btn btn-primary") Volume down
-			//- button(id="up" class="btn btn-primary") Volume up
-			//- button(id='toggle' class="btn btn-primary") Play/Pause
 
 			form(id="songform")
 				select(name="song" form="songform" class="form-control" multiple="multiple")
@@ -42,38 +34,15 @@ html
 			script.
 				var app = angular.module('app', ['ui.bootstrap']);
 				$(function() {
-					$('.uib-timepicker').find('input').each(function() {
-						this.value = "0";
-					});
-
-					$("div#play").click(function() {
-						console.log($('#songform').serialize());
-						var url = "/play"; // the script where you handle the form input.
-						$.ajax({
-							type: "GET",
-							url: url,
-							data: $("#songform").serialize() // serializes the form's elements.
-						});
-						
-						return false; // avoid to execute the actual submit of the form.
-					});
-					
-					$('button').click(function (evt) {
-						$.get('/' + evt.target.id);
-					});
-
 
 					$('div#sleep').click(function() {
-						$.ajax({
-							type: "GET",
+						const hours = $('input[ng-model=hours]')[0].value * 3600
+							minutes = $('input[ng-model=minutes]')[0].value * 60
+							seconds = parseInt($('input[ng-model=seconds]')[0].value);
+
+						$.getJSON({
 							url: "/sleep",
-							dataType: 'json',
-							data: { 
-								time: $('input[ng-model=hours]')[0].value * 3600 + 
-												parseInt($('input[ng-model=minutes]')[0].value) * 60 + 
-												parseInt($('input[ng-model=seconds]')[0].value),
-								song: $('.select2-selection__choice')[0].title
-							}
+							data: $("#songform").serialize() + "&time=" + (hours + minutes + seconds)
 						});
 					});
 
